@@ -1,11 +1,15 @@
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import precision_score, recall_score, f1_score
+from sklearn.metrics import roc_curve, auc
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 from  sklearn.preprocessing import StandardScaler
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
+#matplotlib.use('TkAgg')
 
 # LOAD DATA
 data_raw = pd.read_csv(
@@ -73,3 +77,23 @@ y_prediction = model_svc.predict(x_test)
 print('SVC--classification_report'.center(52, '-'))  # 总共打印52个字符 剧中后，其他的用-填充
 print(classification_report(y_true=y_test, y_pred=y_prediction))  # support 数量
 print()
+
+print('SVC--Confusion Matrix'.center(52, '-')) 
+print(confusion_matrix(y_true=y_test, y_pred=y_prediction))
+
+print("Draw!")
+false_positive_rate, true_positive_rate, thresholds = roc_curve(
+    y_test, y_prediction, pos_label=1)
+print('false_positive_rate: ',false_positive_rate)
+print('true_positive_rate: ',true_positive_rate)
+print('thresholds: ',thresholds)
+
+roc_auc = auc(false_positive_rate, true_positive_rate)
+plt.title('ROC')
+plt.plot(false_positive_rate, true_positive_rate,
+         'b', label='AUC = %0.4f' % roc_auc)
+plt.legend(loc='lower right')
+plt.plot([0, 1], [0, 1], 'r--')
+plt.ylabel('TPR')
+plt.xlabel('FPR')
+plt.savefig('./plot1.png', format='png')
