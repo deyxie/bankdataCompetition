@@ -4,12 +4,12 @@ from sklearn.metrics import roc_curve, auc
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
-from  sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
-#matplotlib.use('TkAgg')
+# matplotlib.use('TkAgg')
 
 # LOAD DATA
 data_raw = pd.read_csv(
@@ -28,8 +28,8 @@ print("class 0: ", the_0class_num)
 
 # Sampling for data balance
 # using tran_id  to find the right rows
-data_12059_1 = data_raw.loc[data_raw['target'] == 
-                            1, :].sample(n=the_1class_num,random_state=123)
+data_12059_1 = data_raw.loc[data_raw['target'] ==
+                            1, :].sample(n=the_1class_num, random_state=123)
 data_12059_0 = data_raw.loc[data_raw['target'] ==
                             0, :].sample(n=the_1class_num, random_state=123)
 data_balanced = pd.concat([data_12059_1, data_12059_0], axis=0)
@@ -78,16 +78,16 @@ print('SVC--classification_report'.center(52, '-'))  # 总共打印52个字符 �
 print(classification_report(y_true=y_test, y_pred=y_prediction))  # support 数量
 print()
 
-print('SVC--Confusion Matrix'.center(52, '-')) 
+print('SVC--Confusion Matrix'.center(52, '-'))
 print(confusion_matrix(y_true=y_test, y_pred=y_prediction))
 
 print("Draw!")
 false_positive_rate, true_positive_rate, thresholds = roc_curve(
     y_test, y_prediction, pos_label=1)
-print('false_positive_rate: ',false_positive_rate)
-print('true_positive_rate: ',true_positive_rate)
-print('thresholds: ',thresholds)
-
+print('false_positive_rate: ', false_positive_rate)
+print('true_positive_rate: ', true_positive_rate)
+print('thresholds: ', thresholds)
+help
 roc_auc = auc(false_positive_rate, true_positive_rate)
 plt.title('ROC')
 plt.plot(false_positive_rate, true_positive_rate,
